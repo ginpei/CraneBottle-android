@@ -43,7 +43,8 @@ public class Speaker {
     }
 
     private void updateTtsSettings() {
-        tts.setLanguage(LOCALE_DEFAULT);
+        tts.setLanguage(Locale.JAPANESE);
+//        tts.setLanguage(LOCALE_DEFAULT);
     }
 
     private int setOnUtteranceProgressListener() {

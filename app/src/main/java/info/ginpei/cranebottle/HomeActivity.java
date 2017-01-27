@@ -8,8 +8,12 @@ import android.widget.Toast;
 public class HomeActivity extends AppCompatActivity {
 
     TextView statusTextView;
+    TextView questionTextView;
 
     Speaker speaker;
+
+    QuizManager manager;
+    Quiz currentQuiz = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,12 +21,16 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         statusTextView = (TextView) findViewById(R.id.textView_status);
+        questionTextView = (TextView) findViewById(R.id.textView_question);
 
         findViewById(R.id.button_start).setOnClickListener(view -> {
-            speaker.speak("Hello world!");
+            start();
         });
 
         speaker = new Speaker(this, new SpeakerListener());
+
+        manager = new QuizManager();
+        manager.load();
     }
 
     @Override
@@ -40,8 +48,19 @@ public class HomeActivity extends AppCompatActivity {
         speaker.shutdown();
     }
 
+    private void start() {
+        currentQuiz = manager.next();
+        String question = currentQuiz.getQuestion();
+        setQuestionText(question);
+        speaker.speak(question);
+    }
+
     private void setStatusText(String text) {
         statusTextView.setText(text);
+    }
+
+    private void setQuestionText(String text) {
+        questionTextView.setText(text);
     }
 
     private void toast(String text) {
@@ -73,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public void onError(int errorCode) {
-
+            // TODO
         }
     }
 }
