@@ -55,6 +55,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void start() {
+        setStatusText("Picking the next quiz...");
+
         currentQuiz = manager.next();
         String question = currentQuiz.getQuestion();
         setQuestionText(question);
@@ -93,7 +95,7 @@ public class HomeActivity extends AppCompatActivity {
                             break;
 
                         case Speaker.PROGRESS_DONE:
-                            setStatusText("Now your turn.");
+                            setStatusText("Preparing mic...");
                             microphone.listen();
                             break;
                     }
