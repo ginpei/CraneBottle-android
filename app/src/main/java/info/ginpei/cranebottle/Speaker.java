@@ -1,6 +1,6 @@
 package info.ginpei.cranebottle;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -16,13 +16,13 @@ public class Speaker {
     public static final int PROGRESS_SPEAKING = 2;
     public static final int PROGRESS_DONE = 3;
     public static final int PROGRESS_SHUTDOWN = 4;
-    private static final int ERROR_NOT_READY = -1;
+    public static final int ERROR_NOT_READY = -1;
 
-    Context context;
+    Activity context;
     Listener listener;
     TextToSpeech tts;
 
-    public Speaker(Context context, Listener listener) {
+    public Speaker(Activity context, Listener listener) {
         this.context = context;
         this.listener = listener;
     }
@@ -96,6 +96,7 @@ public class Speaker {
 
     public static interface Listener {
         public void onProgress(int progressCode);
+
         public void onError(int errorCode);
     }
 }

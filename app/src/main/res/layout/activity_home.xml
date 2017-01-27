@@ -27,5 +27,12 @@
     <TextView
         android:id="@+id/textView_question"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_start" />
+
+    <TextView
+        android:id="@+id/textView_userAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_question" />
 </RelativeLayout>
