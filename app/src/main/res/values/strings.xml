@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Crane Bottle</string>
     <string name="start">Start</string>
+    <string name="tmp_q1">これはペンです。</string>
+    <string name="tmp_q2">これは良いペンです。</string>
+    <string name="tmp_q3">これは昨日買った、良いペンです。</string>
 </resources>

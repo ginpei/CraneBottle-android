@@ -19,12 +19,6 @@ public class QuizManager {
         return list.size();
     }
 
-    public void load() {
-        list.add(new Quiz("これはペンです。", "This is a pen."));
-        list.add(new Quiz("これは良いペンです。", "This is a nice pen."));
-        list.add(new Quiz("これは昨日買った、良いペンです。", "This is a nice pen which I bought yesterday."));
-    }
-
     public Quiz next() {
         Quiz quiz;
         if (position < list.size()) {

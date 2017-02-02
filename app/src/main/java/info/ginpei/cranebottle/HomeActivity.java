@@ -2,11 +2,15 @@ package info.ginpei.cranebottle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class HomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "HomeActivity";
     TextView statusTextView;
     TextView questionTextView;
     TextView userAnswerTextView;
@@ -34,7 +38,14 @@ public class HomeActivity extends AppCompatActivity {
         microphone = new Microphone(this, new MicrophoneListener());
 
         manager = new QuizManager();
-        manager.load();
+        load(manager);
+    }
+
+    private void load(QuizManager manager) {
+        ArrayList<Quiz> quizzes = manager.list;
+        quizzes.add(new Quiz(getString(R.string.tmp_q1), "This is a pen."));
+        quizzes.add(new Quiz(getString(R.string.tmp_q2), "This is a nice pen."));
+        quizzes.add(new Quiz(getString(R.string.tmp_q3), "This is a nice pen which I bought yesterday."));
     }
 
     @Override
@@ -64,6 +75,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setStatusText(String text) {
+        Log.d(TAG, "setStatusText: " + text);
         statusTextView.setText(text);
     }
 
@@ -143,6 +155,9 @@ public class HomeActivity extends AppCompatActivity {
                 case Microphone.ERROR_NOT_READY:
                     setStatusText("Error: Microphone is not ready.");
                     break;
+
+                default:
+                    setStatusText("Error: Microphone went wrong...");
             }
         }
     }
