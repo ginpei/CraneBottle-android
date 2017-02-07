@@ -19,6 +19,10 @@ public class QuizManager {
         return list.size();
     }
 
+    public Quiz getQuizAt(int index) {
+        return list.get(index);
+    }
+
     public Quiz next() {
         Quiz quiz;
         if (position < list.size()) {

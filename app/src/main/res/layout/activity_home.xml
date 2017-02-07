@@ -11,48 +11,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="info.ginpei.cranebottle.HomeActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Status"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp" />
-
     <Button
         android:id="@+id/button_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/start" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Question"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView_question"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Your Answer"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView_userAnswer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp" />
 </LinearLayout>
