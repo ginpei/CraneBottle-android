@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,19 @@ public class PlayerActivity extends AppCompatActivity {
         microphone = new Microphone(this, new MicrophoneListener());
 
         questionListView = (ListView) findViewById(R.id.listView_questions);
+
+        findViewById(R.id.toggleButton_play).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToggleButton button = (ToggleButton) view;
+                boolean checked = button.isChecked();
+                if (checked) {
+                    play();
+                } else {
+                    pause();
+                }
+            }
+        });
 
         ArrayList<Quiz> quizzes = manager.list;
         Log.d(TAG, "size=" + quizzes.size());
@@ -85,6 +99,14 @@ public class PlayerActivity extends AppCompatActivity {
             quizzes.add(new Quiz(getString(R.string.tmp_q2), "This is a nice pen."));
             quizzes.add(new Quiz(getString(R.string.tmp_q3), "This is a nice pen which I bought yesterday."));
         }
+    }
+
+    private void play() {
+        Log.d(TAG, "play");
+    }
+
+    private void pause() {
+        Log.d(TAG, "pause");
     }
 
     private void setStatusText(String text) {
