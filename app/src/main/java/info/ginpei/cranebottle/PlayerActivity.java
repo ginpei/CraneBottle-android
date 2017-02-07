@@ -29,10 +29,6 @@ public class PlayerActivity extends AppCompatActivity {
 
         manager = new QuizManager();
         load(manager);
-        load(manager);
-        load(manager);
-        load(manager);
-        load(manager);
 
         speaker = new Speaker(this, new SpeakerListener());
         microphone = new Microphone(this, new MicrophoneListener());
@@ -84,9 +80,11 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void load(QuizManager manager) {
         ArrayList<Quiz> quizzes = manager.list;
-        quizzes.add(new Quiz(getString(R.string.tmp_q1), "This is a pen."));
-        quizzes.add(new Quiz(getString(R.string.tmp_q2), "This is a nice pen."));
-        quizzes.add(new Quiz(getString(R.string.tmp_q3), "This is a nice pen which I bought yesterday."));
+        for (int i = 0; i < 10; i++) {
+            quizzes.add(new Quiz(getString(R.string.tmp_q1), "This is a pen."));
+            quizzes.add(new Quiz(getString(R.string.tmp_q2), "This is a nice pen."));
+            quizzes.add(new Quiz(getString(R.string.tmp_q3), "This is a nice pen which I bought yesterday."));
+        }
     }
 
     private void setStatusText(String text) {
