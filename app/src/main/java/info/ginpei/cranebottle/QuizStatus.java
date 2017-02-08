@@ -34,4 +34,16 @@ public class QuizStatus {
     public boolean isIncorrect() {
         return status == STATUS_INCORRECT;
     }
+
+    public boolean answer(String userAnswer) {
+        this.userAnswer = userAnswer;
+        boolean correct = quiz.isCorrect(userAnswer);
+        if (correct) {
+            status = STATUS_CORRECT;
+        } else {
+            status = STATUS_INCORRECT;
+        }
+
+        return correct;
+    }
 }

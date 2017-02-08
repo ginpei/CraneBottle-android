@@ -22,6 +22,8 @@ public class PlayerActivity extends AppCompatActivity {
     private Microphone microphone;
 
     private ListView questionListView;
+    private QuizStatus currentQuizStatus;
+    private ArrayAdapter<QuizStatus> quizArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,7 @@ public class PlayerActivity extends AppCompatActivity {
         });
 
         Log.d(TAG, "size=" + quizzes.size());
-        ArrayAdapter<QuizStatus> quizArrayAdapter = new ArrayAdapter<QuizStatus>(
+        quizArrayAdapter = new ArrayAdapter<QuizStatus>(
                 this,
                 android.R.layout.simple_list_item_2,
                 android.R.id.text1,
@@ -110,14 +112,33 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void play() {
-        speaker.speak("Hello world!", () -> {
+        int position = quizzes.getCurrentPosition();
+        if (position < 0) {
+            quizzes.moveOnToNext();
+        }
+
+        currentQuizStatus = quizzes.getCurrent();
+        String question = currentQuizStatus.quiz.getQuestion();
+        speaker.speak(question, () -> {
             runOnUiThread(() -> {
                 Log.d(TAG, "Called back from speaker!");
+
                 microphone.listen(() -> {
                     Log.d(TAG, "Called back from mic and the result is: " + microphone.result);
+
+                    String userAnswer = microphone.getResult();
+                    currentQuizStatus.answer(userAnswer);
+
+                    quizzes.moveOnToNext();
+                    play();
+                    updateView();
                 });
             });
         });
+    }
+
+    private void updateView() {
+        quizArrayAdapter.notifyDataSetChanged();
     }
 
     private void pause() {
