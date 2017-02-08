@@ -28,6 +28,17 @@ public class QuizStatusList extends ArrayList<QuizStatus> {
     }
 
     @Nullable
+    public QuizStatus getCurrent() {
+        QuizStatus status;
+        if (isValidPosition()) {
+            status = get(currentPosition);
+        } else {
+            status = null;
+        }
+        return status;
+    }
+
+    @Nullable
     public Quiz getCurrentQuiz() {
         Quiz quiz;
         if (isValidPosition()) {

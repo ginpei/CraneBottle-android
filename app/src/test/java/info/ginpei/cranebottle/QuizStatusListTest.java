@@ -59,6 +59,20 @@ public class QuizStatusListTest {
     }
 
     @Test
+    public void getCurrent() throws Exception {
+        // get the initial
+        // (out of bounds)
+        assertNull(list.getCurrent());
+
+        // get the first
+        list.moveOnToNext();
+        QuizStatus firstStatus = list.getCurrent();
+        Quiz firstQuiz = firstStatus.getQuiz();
+        assertEquals("Question 0", firstQuiz.getQuestion());
+        assertEquals("Answer 0", firstQuiz.getAnswer());
+    }
+
+    @Test
     public void getCurrentQuiz() throws Exception {
         // in the initial
         // (out of bounds)
