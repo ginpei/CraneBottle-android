@@ -11,11 +11,7 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private static final String TAG = "HomeActivity";
-    TextView statusTextView;
-    TextView userAnswerTextView;
-
-    Quiz currentQuiz = null;
+    private static final String TAG = "G#HomeActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
