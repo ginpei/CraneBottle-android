@@ -67,4 +67,15 @@ public class QuizStatusListTest {
         assertEquals("Answer 0", firstQuiz.getAnswer());
     }
 
+    @Test
+    public void getQuiz() throws Exception {
+        Quiz quiz4 = list.getQuiz(4);
+        assertEquals("Question 4", quiz4.getQuestion());
+        assertEquals("Answer 4", quiz4.getAnswer());
+
+        // out of bounds
+        assertNull(list.getQuiz(-1));
+        assertNull(list.getQuiz(5));
+    }
+
 }
