@@ -10,10 +10,12 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 public class Microphone {
+    public static final String TAG = "G#Microphone";
 
     public static final int PROGRESS_READY = 0;
     public static final int PROGRESS_WAITING = 1;
@@ -27,6 +29,7 @@ public class Microphone {
     protected SpeechRecognizer recognizer;
 
     protected String result;
+    private Runnable callback = null;
 
     public String getResult() {
         return result;
@@ -91,6 +94,7 @@ public class Microphone {
             public void onResults(Bundle bundle) {
                 result = pickUpResultText(bundle);
                 fireProgress(PROGRESS_DONE);
+                doCallback();
             }
 
             @Override
@@ -105,6 +109,12 @@ public class Microphone {
         });
     }
 
+    private void doCallback() {
+        if (callback != null) {
+            callback.run();
+        }
+    }
+
     private String pickUpResultText(Bundle result) {
         ArrayList data = result.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String text;
@@ -117,7 +127,10 @@ public class Microphone {
     }
 
     public void listen() {
+        Log.d(TAG, "listen. recognizer? " + (recognizer != null));
+
         if (recognizer != null) {
+            // TODO review what this intent is
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "voice.recognition.test");
@@ -127,6 +140,11 @@ public class Microphone {
         } else {
             fireError(ERROR_NOT_READY);
         }
+    }
+
+    public void listen(Runnable callback) {
+        listen();
+        this.callback = callback;
     }
 
     private void fireProgress(int progressCode) {

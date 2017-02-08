@@ -4,13 +4,15 @@ import android.app.Activity;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.util.Log;
 
 import java.util.Locale;
 
 public class Speaker {
+    public static final String TAG = "G#Speaker";
     public static final String MY_UTTERANCE_ID = "My Utterance ID";
-    public static final Locale LOCALE_DEFAULT = Locale.US;
 
+    public static final Locale LOCALE_DEFAULT = Locale.US;
     public static final int PROGRESS_INIT = 0;
     public static final int PROGRESS_READY = 1;
     public static final int PROGRESS_SPEAKING = 2;
@@ -21,6 +23,7 @@ public class Speaker {
     Activity context;
     Listener listener;
     TextToSpeech tts;
+    Runnable callback = null;
 
     public Speaker(Activity context, Listener listener) {
         this.context = context;
@@ -57,6 +60,7 @@ public class Speaker {
             @Override
             public void onDone(String utteranceId) {
                 fireProgress(PROGRESS_DONE);
+                doCallback();
             }
 
             @Override
@@ -64,6 +68,14 @@ public class Speaker {
                 fireProgress(PROGRESS_INIT);
             }
         });
+    }
+
+    private void doCallback() {
+        Log.d(TAG, "doCallback. callback? " + (callback != null));
+        if (callback != null) {
+            callback.run();
+            callback = null;
+        }
     }
 
     public void shutdown() {
@@ -84,6 +96,15 @@ public class Speaker {
         } else {
             fireError(ERROR_NOT_READY);
         }
+    }
+
+    public void speak(String text, Runnable callback) {
+        if (this.callback != null) {
+            // do something?
+        }
+
+        this.callback = callback;
+        this.speak(text);
     }
 
     private void fireProgress(int progressCode) {

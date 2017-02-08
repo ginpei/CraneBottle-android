@@ -1,8 +1,8 @@
 package info.ginpei.cranebottle;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class PlayerActivity extends AppCompatActivity {
 
-    public static final String TAG = "PlayerActivity";
+    public static final String TAG = "G#PlayerActivity";
     private QuizManager manager;
 
     private Speaker speaker;
@@ -77,11 +77,11 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "onResume()");
         super.onResume();
 
         speaker.setup();
         microphone.setup();
-        setStatusText("Preparing...");
     }
 
     @Override
@@ -102,7 +102,14 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void play() {
-        Log.d(TAG, "play");
+        speaker.speak("Hello world!", () -> {
+            runOnUiThread(() -> {
+                Log.d(TAG, "Called back from speaker!");
+                microphone.listen(() -> {
+                    Log.d(TAG, "Called back from mic and the result is: " + microphone.result);
+                });
+            });
+        });
     }
 
     private void pause() {
@@ -126,16 +133,15 @@ public class PlayerActivity extends AppCompatActivity {
                 public void run() {
                     switch (progressCode) {
                         case Speaker.PROGRESS_READY:
-                            setStatusText("Hello World!");
+                            Log.d(TAG, "speaker:ready");
                             break;
 
                         case Speaker.PROGRESS_SPEAKING:
-                            setStatusText("Speaking...");
+                            Log.d(TAG, "speaker:speaking");
                             break;
 
                         case Speaker.PROGRESS_DONE:
-                            setStatusText("Preparing mic...");
-                            microphone.listen();
+                            Log.d(TAG, "speaker:done");
                             break;
                     }
                 }
@@ -144,7 +150,14 @@ public class PlayerActivity extends AppCompatActivity {
 
         @Override
         public void onError(int errorCode) {
-            // TODO
+            switch (errorCode) {
+                case Speaker.ERROR_NOT_READY:
+                    Log.d(TAG, "speaker:error: Not ready.");
+                    break;
+
+                default:
+                    Log.d(TAG, "speaker:error: other: " + errorCode);
+            }
         }
     }
 
@@ -155,21 +168,24 @@ public class PlayerActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     switch (progressCode) {
+                        case Microphone.PROGRESS_READY:
+                            Log.d(TAG, "mic:ready");
+                            break;
+
                         case Microphone.PROGRESS_WAITING:
-                            setStatusText("OK please speak now...");
+                            Log.d(TAG, "mic:waiting");
                             break;
 
                         case Microphone.PROGRESS_LISTENING:
-                            setStatusText("Listening...");
+                            Log.d(TAG, "mic:listening");
                             break;
 
                         case Microphone.PROGRESS_RECOGNIZING:
-                            setStatusText("Recognizing...");
+                            Log.d(TAG, "mic:recognizing");
                             break;
 
                         case Microphone.PROGRESS_DONE:
-                            setStatusText("Done.");
-//                            setUserAnswerText(microphone.getResult());
+                            Log.d(TAG, "mic:done");
                             break;
                     }
                 }
@@ -180,11 +196,11 @@ public class PlayerActivity extends AppCompatActivity {
         public void onError(int errorCode) {
             switch (errorCode) {
                 case Microphone.ERROR_NOT_READY:
-                    setStatusText("Error: Microphone is not ready.");
+                    Log.d(TAG, "mic:error: Not ready.");
                     break;
 
                 default:
-                    setStatusText("Error: Microphone went wrong...");
+                    Log.d(TAG, "mic:error: other: " + errorCode);
             }
         }
     }
