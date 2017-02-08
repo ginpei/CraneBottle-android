@@ -14,8 +14,8 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 public class PlayerActivity extends AppCompatActivity {
-
     public static final String TAG = "G#PlayerActivity";
+
     private QuizStatusList quizzes;
 
     private Speaker speaker;
@@ -59,16 +59,15 @@ public class PlayerActivity extends AppCompatActivity {
             @NonNull
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                QuizStatus status = quizzes.get(position);
-                Quiz quiz = status.getQuiz();
+                View view = renderListItemView(position, convertView, parent);
 
+                return view;
+            }
+
+            @NonNull
+            private View renderListItemView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-
-                String title = quiz.getQuestion() + "..." + (status.isAnswered() ? "Done" : "Not yet");
-                ((TextView) view.findViewById(android.R.id.text1)).setText(title);
-                Log.d(TAG, position + " " + title);
-                ((TextView) view.findViewById(android.R.id.text2)).setText(quiz.getAnswer());
-
+                renderQuizItemView(view, position);
                 return view;
             }
         };
@@ -99,6 +98,15 @@ public class PlayerActivity extends AppCompatActivity {
             quizzes.add(new Quiz(getString(R.string.tmp_q2), "This is a nice pen."));
             quizzes.add(new Quiz(getString(R.string.tmp_q3), "This is a nice pen which I bought yesterday."));
         }
+
+        quizzes.moveOnToNext();
+        QuizStatus status1 = quizzes.get(quizzes.getCurrentPosition());
+        status1.status = QuizStatus.STATUS_CORRECT;
+        quizzes.moveOnToNext();
+        QuizStatus status2 = quizzes.get(quizzes.getCurrentPosition());
+        status2.status = QuizStatus.STATUS_INCORRECT;
+        quizzes.moveOnToNext();
+        QuizStatus status3 = quizzes.get(quizzes.getCurrentPosition());
     }
 
     private void play() {
@@ -114,6 +122,21 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void pause() {
         Log.d(TAG, "pause");
+    }
+
+    private void renderQuizItemView(View view, int position) {
+        QuizStatus status = quizzes.get(position);
+        Quiz quiz = status.getQuiz();
+
+        String title = quiz.getQuestion();
+        if (position == quizzes.getCurrentPosition()) {
+            title += " (playing)";
+        } else if (status.isAnswered()) {
+            title += " " + (status.isCorrect() ? "(OK)" : "(NG!)");
+        }
+
+        ((TextView) view.findViewById(android.R.id.text1)).setText(title);
+        ((TextView) view.findViewById(android.R.id.text2)).setText(quiz.getAnswer());
     }
 
     private void setStatusText(String text) {
