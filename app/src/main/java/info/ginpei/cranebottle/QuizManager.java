@@ -1,3 +1,5 @@
+// TODO replace this with QuizStatus and QuizStatusList
+
 package info.ginpei.cranebottle;
 
 import java.util.ArrayList;

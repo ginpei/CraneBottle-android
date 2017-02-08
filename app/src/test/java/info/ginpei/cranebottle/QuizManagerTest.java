@@ -11,7 +11,7 @@ public class QuizManagerTest {
     @Before
     public void setUp() throws Exception {
         manager = new QuizManager();
-        manager.load();
+//        manager.load();
     }
 
     @Test
