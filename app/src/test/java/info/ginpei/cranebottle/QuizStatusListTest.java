@@ -1,9 +1,12 @@
 package info.ginpei.cranebottle;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class QuizStatusListTest {
     QuizStatusList list;
@@ -58,6 +61,7 @@ public class QuizStatusListTest {
     @Test
     public void getCurrentQuiz() throws Exception {
         // in the initial
+        // (out of bounds)
         assertNull(list.getCurrentQuiz());
 
         // the first one
@@ -74,8 +78,19 @@ public class QuizStatusListTest {
         assertEquals("Answer 4", quiz4.getAnswer());
 
         // out of bounds
-        assertNull(list.getQuiz(-1));
-        assertNull(list.getQuiz(5));
+        try {
+            assertNull(list.getQuiz(-1));
+            Assert.fail();
+        } catch (Exception e) {
+            // success
+        }
+
+        try {
+            assertNull(list.getQuiz(5));
+            Assert.fail();
+        } catch (Exception e) {
+            // success
+        }
     }
 
 }

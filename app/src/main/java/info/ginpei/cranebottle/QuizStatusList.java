@@ -29,17 +29,25 @@ public class QuizStatusList extends ArrayList<QuizStatus> {
 
     @Nullable
     public Quiz getCurrentQuiz() {
-        return getQuiz(currentPosition);
-    }
-
-    @Nullable
-    public Quiz getQuiz(int position) {
         Quiz quiz;
-        if (0 <= position && position < size()) {
-            quiz = get(position).quiz;  // shouldn't be getQuiz()?
+        if (isValidPosition()) {
+            quiz = getQuiz(currentPosition);
         } else {
             quiz = null;
         }
         return quiz;
+    }
+
+    public Quiz getQuiz(int position) {
+        return get(position).quiz;  // shouldn't be getQuiz()?
+    }
+
+    /**
+     * Return true if the current position is valid.
+     *
+     * @return
+     */
+    public boolean isValidPosition() {
+        return 0 <= currentPosition && currentPosition < size();
     }
 }
