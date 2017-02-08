@@ -11,6 +11,10 @@ public class QuizStatusList extends ArrayList<QuizStatus> {
         return currentPosition;
     }
 
+    public boolean add(Quiz quiz) {
+        return add(new QuizStatus(quiz));
+    }
+
     @Nullable
     public Quiz moveOnToNext() {
         Quiz quiz;

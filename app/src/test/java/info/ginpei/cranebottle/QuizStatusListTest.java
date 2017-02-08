@@ -11,11 +11,22 @@ public class QuizStatusListTest {
     @Before
     public void setUp() throws Exception {
         list = new QuizStatusList();
-        list.add(new QuizStatus(new Quiz("Question 0", "Answer 0")));
-        list.add(new QuizStatus(new Quiz("Question 1", "Answer 1")));
-        list.add(new QuizStatus(new Quiz("Question 2", "Answer 2")));
-        list.add(new QuizStatus(new Quiz("Question 3", "Answer 3")));
-        list.add(new QuizStatus(new Quiz("Question 4", "Answer 4")));
+        list.add(new Quiz("Question 0", "Answer 0"));
+        list.add(new Quiz("Question 1", "Answer 1"));
+        list.add(new Quiz("Question 2", "Answer 2"));
+        list.add(new Quiz("Question 3", "Answer 3"));
+        list.add(new Quiz("Question 4", "Answer 4"));
+    }
+
+    @Test
+    public void add() throws Exception {
+        // add a Quiz instead of QuizStatus
+        boolean succeeded = list.add(new Quiz("My Question", "My Answer"));
+        QuizStatus status = list.get(list.size() - 1);
+        Quiz quiz = status.getQuiz();
+        assertTrue(succeeded);
+        assertEquals("My Question", quiz.getQuestion());
+        assertEquals("My Answer", quiz.getAnswer());
     }
 
     @Test
