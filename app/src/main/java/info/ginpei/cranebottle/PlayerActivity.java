@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -24,6 +25,7 @@ public class PlayerActivity extends AppCompatActivity {
     private ListView questionListView;
     private QuizStatus currentQuizStatus;
     private ArrayAdapter<QuizStatus> quizArrayAdapter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class PlayerActivity extends AppCompatActivity {
         speaker = new Speaker(this, new SpeakerListener());
         microphone = new Microphone(this, new MicrophoneListener());
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar_questions);
         questionListView = (ListView) findViewById(R.id.listView_questions);
 
         findViewById(R.id.toggleButton_play).setOnClickListener(new View.OnClickListener() {
@@ -84,6 +87,8 @@ public class PlayerActivity extends AppCompatActivity {
 
         speaker.setup();
         microphone.setup();
+
+        updateView();
     }
 
     @Override
@@ -138,7 +143,13 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void updateView() {
+        // progress bar
+        progressBar.setMax(quizzes.size());
+        progressBar.setProgress(quizzes.getCurrentPosition());
+
+        // list
         quizArrayAdapter.notifyDataSetChanged();
+        // TODO scroll to the current item
     }
 
     private void pause() {
