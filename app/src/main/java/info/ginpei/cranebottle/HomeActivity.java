@@ -15,7 +15,6 @@ public class HomeActivity extends AppCompatActivity {
     TextView statusTextView;
     TextView userAnswerTextView;
 
-    QuizManager manager;
     Quiz currentQuiz = null;
 
     @Override

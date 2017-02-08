@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class PlayerActivity extends AppCompatActivity {
 
     public static final String TAG = "G#PlayerActivity";
-    private QuizManager manager;
+    private QuizStatusList quizzes;
 
     private Speaker speaker;
     private Microphone microphone;
@@ -28,8 +28,8 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
-        manager = new QuizManager();
-        load(manager);
+        quizzes = new QuizStatusList();
+        load();
 
         speaker = new Speaker(this, new SpeakerListener());
         microphone = new Microphone(this, new MicrophoneListener());
@@ -49,9 +49,8 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<Quiz> quizzes = manager.list;
         Log.d(TAG, "size=" + quizzes.size());
-        ArrayAdapter<Quiz> quizArrayAdapter = new ArrayAdapter<Quiz>(
+        ArrayAdapter<QuizStatus> quizArrayAdapter = new ArrayAdapter<QuizStatus>(
                 this,
                 android.R.layout.simple_list_item_2,
                 android.R.id.text1,
@@ -60,12 +59,14 @@ public class PlayerActivity extends AppCompatActivity {
             @NonNull
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                Quiz quiz = quizzes.get(position);
+                QuizStatus status = quizzes.get(position);
+                Quiz quiz = status.getQuiz();
 
                 View view = super.getView(position, convertView, parent);
 
-                ((TextView) view.findViewById(android.R.id.text1)).setText(position + quiz.getQuestion());
-                Log.d(TAG, position + " " + quiz.getQuestion());
+                String title = quiz.getQuestion() + "..." + (status.isAnswered() ? "Done" : "Not yet");
+                ((TextView) view.findViewById(android.R.id.text1)).setText(title);
+                Log.d(TAG, position + " " + title);
                 ((TextView) view.findViewById(android.R.id.text2)).setText(quiz.getAnswer());
 
                 return view;
@@ -92,8 +93,7 @@ public class PlayerActivity extends AppCompatActivity {
         microphone.shutdown();
     }
 
-    private void load(QuizManager manager) {
-        ArrayList<Quiz> quizzes = manager.list;
+    private void load() {
         for (int i = 0; i < 10; i++) {
             quizzes.add(new Quiz(getString(R.string.tmp_q1), "This is a pen."));
             quizzes.add(new Quiz(getString(R.string.tmp_q2), "This is a nice pen."));

@@ -24,7 +24,7 @@ public class QuizStatus {
     }
 
     public boolean isAnswered() {
-        return status == STATUS_READY;
+        return status != STATUS_READY;
     }
 
     public boolean isCorrect() {
